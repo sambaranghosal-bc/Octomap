@@ -108,7 +108,7 @@ int main(int /*argc*/, char** /*argv*/) {
     octomap::OcTree tree(resolution);
 
     // Open the point cloud text file
-    std::ifstream infile("/home/sambaran.ghosal/BrainCorp/Sambaran/development/octomap/point_cloud.txt");
+    std::ifstream infile("/home/sambaran.ghosal/BrainCorp/Sambaran/development/octomap/voxel_grid_points.txt");
     if (!infile) {
         std::cerr << "Error opening point cloud file." << std::endl;
         return -1;
@@ -122,6 +122,9 @@ int main(int /*argc*/, char** /*argv*/) {
     }
 
     infile.close();
+
+    //Add a far away point from current observations to the pointcloud
+    tree.updateNode(octomap::point3d(50, -20, 10), true);
 
     // Optionally save the octree to a file
     tree.writeBinary("octree_from_point_cloud.bt");
