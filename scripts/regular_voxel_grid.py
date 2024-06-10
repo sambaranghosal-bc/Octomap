@@ -31,7 +31,7 @@ class RegularVoxelGrid:
     _total_voxels: Optional[int] = None
     _filename: str = "voxel_grid.ply"
 
-    def __attrs_post_init__(self):
+    def __attrs_post_init__(self) -> None:
         """
         Post initialization method
         :return:
@@ -43,33 +43,29 @@ class RegularVoxelGrid:
         self._regular_voxel_grid = np.zeros(self._grid_size)
         self._total_voxels = int(np.prod(self._grid_size))
 
-    def create_regular_voxel_map(self):
+    def create_regular_voxel_map(self) -> None:
         """
-        Create regular voxel grid by assigning a random number of points as being occuppied
-        The cells being assigned occuppied are assigned a value of 1 in the voxel grid
-        The other cells remain as free cells and have the valueas 0
-        :return:
+        Create regular voxel grid by assigning a random number of points as being occupied
+        The cells being assigned occupied are assigned a value of 1 in the voxel grid
+        The other cells remain as free cells and have the values 0
         """
         occuppied_voxels_count = int(self._total_voxels * 0.05)
         occuppied_indices = np.random.choice(self._total_voxels, occuppied_voxels_count, replace=False)
         occuppied_voxels = np.unravel_index(occuppied_indices, self._grid_size)
         self._regular_voxel_grid[occuppied_voxels] = 1
-        return
 
-    def add_point_to_voxel_grid(self, point: np.ndarray):
+    def add_point_to_voxel_grid(self, point: np.ndarray) -> None:
         """
         Add a point to the voxel grid
         :param point:
-        :return:
         """
         voxel_index = np.floor((point - self.min_coord) / self.resolution).astype(int)
         self._regular_voxel_grid[voxel_index] = 1
-        return
 
-    def get_voxel_grid_points(self):
+    def get_voxel_grid_points(self) -> np.ndarray:
         """
         Get the points in the voxel grid
-        :return:
+        :return occuppied_voxels: np.ndarray
         """
         occuppied_voxels = np.argwhere(self._regular_voxel_grid == 1) * self.resolution + self.min_coord
         return occuppied_voxels
@@ -77,9 +73,6 @@ class RegularVoxelGrid:
     def save_voxel_grid_ply(self) -> None:
         """
         Save the voxel grid as a ply file
-        :param voxel_grid:
-        :param filename:
-        :return:
         """
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(
@@ -88,20 +81,18 @@ class RegularVoxelGrid:
 
         o3d.io.write_point_cloud(self._filename, pcd)
 
-    def get_saved_voxel_map_disk_size(self):
+    def get_saved_voxel_map_disk_size(self) -> float:
         """
         Get the size of the voxel map saved on disk
-        :return:
         """
         return os.path.getsize(self._filename) / (1024 * 1024)  # in MB
 
-    def write_voxel_grid_points_to_txt(self):
+    def write_voxel_grid_points_to_txt(self, filename="voxel_grid_points.txt"):
         """
         Write voxel grid points to a txt file
         :return:
         """
-        np.savetxt("voxel_grid_points.txt", self.get_voxel_grid_points(), fmt="%f %f %f")
-        return
+        np.savetxt(filename, self.get_voxel_grid_points(), fmt="%f %f %f")
 
 
 if __name__ == '__main__':

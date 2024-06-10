@@ -103,12 +103,12 @@ using namespace octomap;
 
 int main(int /*argc*/, char** /*argv*/) {
     // Create an empty octree with a resolution of 0.25 meters
-    double resolution = 0.25;
+    double resolution = 0.1;
     std::cout<<"resolution: "<<resolution<<std::endl;
     octomap::OcTree tree(resolution);
 
     // Open the point cloud text file
-    std::ifstream infile("/home/sambaran.ghosal/BrainCorp/Sambaran/development/octomap/voxel_grid_points.txt");
+    std::ifstream infile("/home/sambaran.ghosal/BrainCorp/Sambaran/development/octomap/adaptive_voxel_grid_points.txt");
     if (!infile) {
         std::cerr << "Error opening point cloud file." << std::endl;
         return -1;
@@ -116,15 +116,23 @@ int main(int /*argc*/, char** /*argv*/) {
 
     // Read the points from the file and insert into the octree
     double x, y, z;
+    octomap::Pointcloud pointcloud;
     while (infile >> x >> y >> z) {
-        octomap::point3d point(x, y, z);
-        tree.updateNode(point, true);  // Mark as occupied
+        pointcloud.push_back(x, y, z);
     }
 
+    octomap::point3d origin(0, 0, 0);
+//    while (infile >> x >> y >> z) {
+//        octomap::point3d point(x, y, z);
+//        tree.insertRay(origin, point);  // Insert free cells along the ray
+//        tree.updateNode(point, true);  // Mark as occupied
+//    }
+
     infile.close();
+    tree.insertPointCloudRays(pointcloud, origin);
 
     //Add a far away point from current observations to the pointcloud
-    tree.updateNode(octomap::point3d(50, -20, 10), true);
+//    tree.updateNode(octomap::point3d(50, -20, 10), true);
 
     // Optionally save the octree to a file
     tree.writeBinary("octree_from_point_cloud.bt");
