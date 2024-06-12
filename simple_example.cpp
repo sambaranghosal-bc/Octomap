@@ -54,11 +54,11 @@ void perform_ray_casting(const octomap::OcTree &tree)
         bool hit = tree.castRay(origin, direction, point, true, 100.0);
         if (hit)
         {
-            std::cout<<"Ray hit the point: "<<point<<std::endl;
+            std::cout<<"Ray from "<<origin<<" at direction "<< direction<<" hit the point: "<<point<<std::endl;
         }
         else
         {
-            std::cout<<"Ray did not hit the point: "<<point<<std::endl;
+            std::cout<<"Ray from "<<origin<<" at direction "<<direction<<"  did not hit any obstacle"<<std::endl;
         }
     }
 }
