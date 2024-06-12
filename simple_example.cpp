@@ -38,69 +38,6 @@
 using namespace std;
 using namespace octomap;
 
-
-//void print_query_info(point3d query, OcTreeNode* node) {
-//  if (node != NULL) {
-//    cout << "occupancy probability at " << query << ":\t " << node->getOccupancy() << endl;
-//  }
-//  else
-//    cout << "occupancy probability at " << query << ":\t is unknown" << endl;
-//}
-//
-//int main(int /*argc*/, char** /*argv*/) {
-//
-//  cout << endl;
-//  cout << "generating example map" << endl;
-//
-//  OcTree tree (0.1);  // create empty tree with resolution 0.1
-//
-//
-//  // insert some measurements of occupied cells
-//
-//  for (int x=-20; x<20; x++) {
-//    for (int y=-20; y<20; y++) {
-//      for (int z=-20; z<20; z++) {
-//        point3d endpoint ((float) x*0.05f, (float) y*0.05f, (float) z*0.05f);
-//        tree.updateNode(endpoint, true); // integrate 'occupied' measurement
-//      }
-//    }
-//  }
-//
-//  // insert some measurements of free cells
-//
-//  for (int x=-30; x<30; x++) {
-//    for (int y=-30; y<30; y++) {
-//      for (int z=-30; z<30; z++) {
-//        point3d endpoint ((float) x*0.02f-1.0f, (float) y*0.02f-1.0f, (float) z*0.02f-1.0f);
-//        tree.updateNode(endpoint, false);  // integrate 'free' measurement
-//      }
-//    }
-//  }
-//
-//  cout << endl;
-//  cout << "performing some queries:" << endl;
-//
-//  point3d query (0., 0., 0.);
-//  OcTreeNode* result = tree.search (query);
-//  print_query_info(query, result);
-//
-//  query = point3d(-1.,-1.,-1.);
-//  result = tree.search (query);
-//  print_query_info(query, result);
-//
-//  query = point3d(1.,1.,1.);
-//  result = tree.search (query);
-//  print_query_info(query, result);
-//
-//
-//  cout << endl;
-//  tree.writeBinary("simple_tree.bt");
-//  cout << "wrote example file simple_tree.bt" << endl << endl;
-//  cout << "now you can use octovis to visualize: octovis simple_tree.bt"  << endl;
-//  cout << "Hint: hit 'F'-key in viewer to see the freespace" << endl  << endl;
-//
-//}
-
 int main(int /*argc*/, char** /*argv*/) {
     // Create an empty octree with a resolution of 0.25 meters
     double resolution = 0.1;
@@ -116,23 +53,20 @@ int main(int /*argc*/, char** /*argv*/) {
 
     // Read the points from the file and insert into the octree
     double x, y, z;
-    octomap::Pointcloud pointcloud;
-    while (infile >> x >> y >> z) {
-        pointcloud.push_back(x, y, z);
-    }
 
     octomap::point3d origin(0, 0, 0);
-//    while (infile >> x >> y >> z) {
-//        octomap::point3d point(x, y, z);
-//        tree.insertRay(origin, point);  // Insert free cells along the ray
-//        tree.updateNode(point, true);  // Mark as occupied
-//    }
+    while (infile >> x >> y >> z) {
+        octomap::point3d point(x, y, z);
+        tree.insertRay(origin, point);  // Insert free cells along the ray
+        tree.updateNode(point, true);  // Mark as occupied
+    }
 
+    // Either when we add individual point, we need to do the rayCasting
+    // Or we can add the entire point cloud at once and that process does the rayCasting implicitly
     infile.close();
-    tree.insertPointCloudRays(pointcloud, origin);
 
     //Add a far away point from current observations to the pointcloud
-//    tree.updateNode(octomap::point3d(50, -20, 10), true);
+    //tree.updateNode(octomap::point3d(50, -20, 10), true);
 
     // Optionally save the octree to a file
     tree.writeBinary("octree_from_point_cloud.bt");
