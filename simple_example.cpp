@@ -38,6 +38,31 @@
 using namespace std;
 using namespace octomap;
 
+void perform_ray_casting(const octomap::OcTree &tree)
+{
+    std::vector<octomap::point3d> directions{
+    point3d(1, 0, 0), point3d(-1, 0, 0), point3d(0, 1, 0), point3d(0, -1, 0), point3d(0, 0, 1), point3d(0, 0, -1),
+    };
+
+    octomap::point3d origin(0, 0, 0);
+
+    for(size_t i=0; i < directions.size(); i++)
+    {
+
+        octomap::point3d point;
+        octomap::point3d direction = directions[i];
+        bool hit = tree.castRay(origin, direction, point, true, 100.0);
+        if (hit)
+        {
+            std::cout<<"Ray hit the point: "<<point<<std::endl;
+        }
+        else
+        {
+            std::cout<<"Ray did not hit the point: "<<point<<std::endl;
+        }
+    }
+}
+
 int main(int /*argc*/, char** /*argv*/) {
     // Create an empty octree with a resolution of 0.25 meters
     double resolution = 0.1;
@@ -72,6 +97,8 @@ int main(int /*argc*/, char** /*argv*/) {
     tree.writeBinary("octree_from_point_cloud.bt");
 
     std::cout << "Octree created and saved to octree_from_point_cloud.bt" << std::endl;
+
+    perform_ray_casting(tree);
 
     return 0;
 }
