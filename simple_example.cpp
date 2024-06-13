@@ -70,7 +70,7 @@ int main(int /*argc*/, char** /*argv*/) {
     octomap::OcTree tree(resolution);
 
     // Open the point cloud text file
-    std::ifstream infile("/home/sambaran.ghosal/BrainCorp/Sambaran/development/octomap/adaptive_voxel_grid_points.txt");
+    std::ifstream infile("/home/brain-spark/Octomap/adaptive_voxel_grid_points.txt");
     if (!infile) {
         std::cerr << "Error opening point cloud file." << std::endl;
         return -1;
