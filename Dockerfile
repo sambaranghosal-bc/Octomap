@@ -4,6 +4,9 @@ FROM ubuntu:22.04
 # Set environment variable to avoid user interaction during installation (ex : avoid passwords, press y)
 ENV DEBIAN_FRONTEND=noninteractive
 ENV WORKDIR=/home/brain-spark/
+# Set environment variables for X11 display
+ENV DISPLAY=:0
+ENV QT_X11_NO_MITSHM=1
 
 # Install essential packages (git, cmake, build-essential, etc.)
 RUN apt-get update && \
@@ -23,7 +26,12 @@ RUN cd $WORKDIR && git clone --recurse-submodules https://github.com/SambaranRep
     cd Octomap && git submodule update --init --recursive && \
     cd OCTOMAP && mkdir build && cd build && cmake .. && make -j${nproc} && make install
 
-RUN cd $WORKDIR && python3 -m venv octomap_venv
+RUN cd /home/brain-spark/Octomap && python3 -m venv octomap_venv
+#cd /home/brain-spark/Octomap && source octomap_venv/bin/activate && \
+#    pip install --upgrade pip && \
+#    pip install numpy matplotlib open3d jupyter
+
+EXPOSE 8888
 
 # Set default command to bas
 CMD ["/bin/bash"]
