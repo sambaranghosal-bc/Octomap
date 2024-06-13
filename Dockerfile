@@ -23,10 +23,7 @@ RUN cd $WORKDIR && git clone --recurse-submodules https://github.com/SambaranRep
     cd Octomap && git submodule update --init --recursive && \
     cd OCTOMAP && mkdir build && cd build && cmake .. && make -j${nproc} && make install
 
-RUN cd $WORKDIR && python3 -m venv octomap_venv && \
-    source octomap_venv/bin/activate && \
-    pip install --upgrade pip && \
-    pip install numpy matplotlib open3d
+RUN cd $WORKDIR && python3 -m venv octomap_venv
 
 # Set default command to bas
 CMD ["/bin/bash"]
