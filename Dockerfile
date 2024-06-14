@@ -22,9 +22,9 @@ RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
 
 # Clone repository
-RUN cd $WORKDIR && git clone --recurse-submodules https://github.com/SambaranRepo/Octomap.git && \
+RUN cd $WORKDIR && git clone --recurse-submodules https://github.com/sambaranghosal-bc/Octomap.git && \
     cd Octomap && git submodule update --init --recursive && \
-    cd OCTOMAP && mkdir build && cd build && cmake .. && make -j${nproc} && make install
+    cd octomap && mkdir build && cd build && cmake .. && make -j${nproc} && make install
 
 RUN cd /home/brain-spark/Octomap && python3 -m venv octomap_venv
 #cd /home/brain-spark/Octomap && source octomap_venv/bin/activate && \
