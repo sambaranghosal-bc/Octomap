@@ -87,7 +87,7 @@ class RegularVoxelGrid:
         """
         return os.path.getsize(self._filename) / (1024 * 1024)  # in MB
 
-    def write_voxel_grid_points_to_txt(self, filename="voxel_grid_points.txt"):
+    def write_voxel_grid_points_to_txt(self, filename="octomap_demo/data/voxel_grid_points.txt"):
         """
         Write voxel grid points to a txt file
         :return:
