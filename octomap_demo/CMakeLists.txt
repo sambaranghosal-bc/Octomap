@@ -11,3 +11,12 @@ include_directories(${OCTOMAP_INCLUDE_DIRS})
 
 add_executable(octomap_demo src/simple_example.cpp)
 target_link_libraries(octomap_demo ${OCTOMAP_LIBRARIES})
+
+add_executable(octomap_creation src/creating_octomap.cpp)
+target_link_libraries(octomap_creation ${OCTOMAP_LIBRARIES})
+
+add_executable(octree_pruning src/pruning.cpp)
+target_link_libraries(octree_pruning ${OCTOMAP_LIBRARIES})
+
+add_executable(2d_raycasting src/2d_raycasting.cpp)
+target_link_libraries(2d_raycasting ${OCTOMAP_LIBRARIES})
