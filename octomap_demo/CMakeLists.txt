@@ -18,5 +18,5 @@ target_link_libraries(octomap_creation ${OCTOMAP_LIBRARIES})
 add_executable(octree_pruning src/pruning.cpp)
 target_link_libraries(octree_pruning ${OCTOMAP_LIBRARIES})
 
-add_executable(2d_raycasting src/2d_raycasting.cpp)
-target_link_libraries(2d_raycasting ${OCTOMAP_LIBRARIES})
+add_executable(3d_raycasting src/3d_raycasting.cpp)
+target_link_libraries(3d_raycasting ${OCTOMAP_LIBRARIES})

@@ -11,21 +11,16 @@ vector<point3d> get_points(const double r, const int n)
 {
     assert(n > 0);
 
-    double x{0}, y{0}, z{0};
-    vector<point3d> points;
-    for (int i = 0; i < n; i++)
-    {
-        x = r * cos(2 * M_PI * i / n);
-        y = r * sin(2 * M_PI * i / n);
-        points.push_back(point3d(x, y, z));
-    }
+    double x{0}, y{0};
 
-    z = 1.0;
-    for (int i = 0; i < n; i++)
-    {
-        x = r * cos(2 * M_PI * i / n);
-        y = r * sin(2 * M_PI * i / n);
-        points.push_back(point3d(x, y, z));
+    vector<point3d> points;
+    for(double z = 0; z < 1.1; z += 0.1){
+        for (int i = 0; i < n; i++)
+        {
+            x = r * cos(2 * M_PI * i / n);
+            y = r * sin(2 * M_PI * i / n);
+            points.push_back(point3d(x, y, z));
+        }
     }
     return points;
 }
