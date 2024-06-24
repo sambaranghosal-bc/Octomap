@@ -20,3 +20,6 @@ target_link_libraries(octree_pruning ${OCTOMAP_LIBRARIES})
 
 add_executable(3d_raycasting src/3d_raycasting.cpp)
 target_link_libraries(3d_raycasting ${OCTOMAP_LIBRARIES})
+
+add_executable(octomap_from_mapping_data src/octomap_from_mapping_data_exercise.cpp)
+target_link_libraries(octomap_from_mapping_data ${OCTOMAP_LIBRARIES})
