@@ -2,6 +2,7 @@ import laspy
 import numpy as np
 import open3d as o3d
 
+
 def read_las_file(file_path):
     # Open the .laz file
     las = laspy.read(file_path)

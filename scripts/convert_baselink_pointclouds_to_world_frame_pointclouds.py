@@ -18,9 +18,6 @@ def transform_pointclouds_to_world_frame():
             ]
         )
         pointcloud_in_world_frame = pointcloud @ transform_matrix[:3, :3].T + transform_matrix[:3, 3]
-        pointcloud_in_world_frame = pointcloud_in_world_frame[
-            (pointcloud_in_world_frame[:, 2] > -0.1) & (pointcloud_in_world_frame[:, 2] < 5)
-        ]
         np.savetxt(
             f"../octomap_demo/data/mapping_data/germany_demo/bpearl_pointcloud_in_world_frame/bpearl_pointcloud_{i}.txt",
             pointcloud_in_world_frame
