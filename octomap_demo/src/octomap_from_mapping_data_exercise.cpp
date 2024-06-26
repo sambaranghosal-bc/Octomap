@@ -41,11 +41,15 @@ int main(int argc, char **argv){
     cout<<"Original probMiss: "<<octree.getProbMiss()<<endl;
     const std::string directory = argv[1];
 
-    const int NUM_FILES = countFilesInDirectory(directory);  // Count the number of files in the directory
-
-    for(int i = 0; i < NUM_FILES / 3; i+=1){
-        cout<<"Processing file: "<<i<<" / "<<NUM_FILES / 3<<endl;
-        std::string file_name = directory + "/point_cloud_" + std::to_string(i) + ".txt";
+    octree.setClampingThresMin(0.25);
+    octree.setClampingThresMax(0.85);
+    octree.setProbHit(0.7);
+    octree.setProbMiss(0.4);
+//    const int NUM_FILES = countFilesInDirectory(directory+ "/bpearl_pointcloud_in_world_frame");  // Count the number of files in the directory
+    const int NUM_FILES = 900;
+    for(int i = 0; i < NUM_FILES; i+=1){
+        cout<<"Processing file: "<<i<<" out of "<<NUM_FILES<<endl;
+        std::string file_name = directory + "/bpearl_pointcloud_in_world_frame/point_cloud_" + std::to_string(i) + ".txt";
         std::ifstream infile(file_name);
         if (!infile) {
             std::cerr << "Error opening point cloud file." << std::endl;
@@ -53,13 +57,27 @@ int main(int argc, char **argv){
         double x, y, z;
         point3d origin(0, 0, 0);
         while (infile >> x >> y >> z) {
-            if (z > 3.95 || z < 1) continue;
+            if (z > 2.0 || z < 0.1) continue;
             point3d point(x, y, z);
             // To demonstrate that ray casting is extremely slow. In reality we make use of parallelization (tBB, OPENMP)
-//                octree.insertRay(origin, point, 100);  // Insert free cells along the ray
+            octree.insertRay(origin, point, 50);  // Insert free cells along the ray
             octree.updateNode(point, true);  // Mark as occupied
         }
         infile.close();
+    }
+
+    cout<<"Entering robot pose into octomap to show trajectory"<<endl;
+    for(int i = 0; i < NUM_FILES; i++)
+    {
+        std::string file_name = directory + "/robot_poses/robot_pose_" + std::to_string(i) + ".txt";
+        std::ifstream infile(file_name);
+        if (!infile) {
+            std::cerr << "Error opening robot pose file." << std::endl;
+        }
+        point3d pose;
+        while (infile >> pose.x() >> pose.y() >> pose.z()) {
+            octree.updateNode(pose, true);  // Mark as occupied
+        }
     }
 
     octree.writeBinary("octomap_from_mapping_data.bt");
