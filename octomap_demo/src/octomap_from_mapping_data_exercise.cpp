@@ -47,6 +47,7 @@ int main(int argc, char **argv){
     octree.setProbMiss(0.4);
 //    const int NUM_FILES = countFilesInDirectory(directory+ "/bpearl_pointcloud_in_world_frame");  // Count the number of files in the directory
     const int NUM_FILES = 900;
+
     for(int i = 0; i < NUM_FILES; i+=1){
         cout<<"Processing file: "<<i<<" out of "<<NUM_FILES<<endl;
         std::string file_name = directory + "/bpearl_pointcloud_in_world_frame/point_cloud_" + std::to_string(i) + ".txt";
