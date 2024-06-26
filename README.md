@@ -1,4 +1,17 @@
 # Brain-Spark Octomap
+
+# Table of Contents
+1. [Introduction](#introduction)
+2. [Docker container for project](#docker-container-for-project)
+   - [Install docker](#install-docker)
+     - [Ubuntu](#ubuntu)
+     - [MacOS](#macos)
+   - [Run docker container](#run-docker-container)
+     - [Pull docker image from Docker Hub](#pull-docker-image-from-docker-hub)
+     - [Build docker image from Dockerfile](#build-docker-image-from-dockerfile)
+3. [Launch Jupyter notebook from inside docker container](#launch-jupyter-notebook-from-inside-docker-container)
+
+## Introduction
 Octomap is an important open source framework for 3D mapping. It is widely used in robotics community for its ease of use and integration. Please see [OctoMap Introduction](OCTOMAP.md) for more information.
 
 In this workshop, we will cover the basics of octopmap (adding points, raycasting, querying, etc.). Then we will see how to create some octomaps from our robot mapping data. While doing so, we will explore the other advantages of octomap like multi-resolution, dynamic handling of obstacles.
